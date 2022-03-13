@@ -8,21 +8,13 @@
 "
 "    ci<space>, da<space> ... modify ANY punctuation object
 "
-" Author: Dimitar Dimitrov (mitkofr@yahoo.fr), kurkale6ka
+    " Author: Dimitar Dimitrov (mitkofr@yahoo.fr), kurkale6ka
 "
-" Latest version at:
-" https://github.com/kurkale6ka/vim-pairs
+    " Latest version at:
+    " https://github.com/kurkale6ka/vim-pairs
 "
 " TODO: Fix @@ and stopinsert if nothing to do after cix !!!
 
-if exists('g:loaded_ptext_objects') || &compatible || v:version < 700
-   if &compatible && &verbose
-      echo "Punctuation Text Objects is not designed to work in compatible mode."
-   elseif v:version < 700
-      echo "Punctuation Text Objects needs Vim 7.0 or above to work correctly."
-   endif
-   finish
-endif
 
 let g:loaded_ptext_objects = 1
 
@@ -31,10 +23,10 @@ let s:savemagic = &magic
 set cpoptions&vim magic
 
 for p in ['!','$','%','^','&','*','_','-','+','=',':',';','@','~','#','<bar>','<bslash>',',','.','?','/']
-   execute 'onoremap <silent> i'.p." :<c-u>call pairs#process('".p."'".", 'i')<cr>"
-   execute 'onoremap <silent> a'.p." :<c-u>call pairs#process('".p."'".", 'a')<cr>"
-   execute 'xnoremap <silent> i'.p." :<c-u>call pairs#process('".p."'".", 'i')<cr>"
-   execute 'xnoremap <silent> a'.p." :<c-u>call pairs#process('".p."'".", 'a')<cr>"
+   execute 'onoremap <silent> i' .p.  " :<c-u>call pairs#process('".p."'".", 'i')<cr>"
+   execute 'onoremap <silent> a' .p.  " :<c-u>call pairs#process('".p."'".", 'a')<cr>"
+   execute 'xnoremap <silent> i' .p.  " :<c-u>call pairs#process('".p."'".", 'i')<cr>"
+   execute 'xnoremap <silent> a' .p.  " :<c-u>call pairs#process('".p."'".", 'a')<cr>"
 endfor
 
 onoremap <silent> <plug>PunctPairsIQuotes :<c-u>call pairs#process("'`".'"', 'i')<cr>
