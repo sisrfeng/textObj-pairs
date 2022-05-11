@@ -1,4 +1,4 @@
-function! pairs#process(chars, oprange)
+fun! pairs#process(chars, oprange)
 
    let s:save_cursor = getpos('.')
    let s:chars       = a:chars
@@ -20,24 +20,24 @@ function! pairs#process(chars, oprange)
             " @@ case
             elseif c > s:save_cursor[2] + 1
                execute 'normal! lvt'.char
-            endif
+            en
          " ...or to the left
-         else
+         el
             if s:oprange == 'a'
                execute 'normal! vF'.char
-            else
+            el
                let [l, c] = searchpos (escape(char, '^.~$'), 'nb', line('.'))
                if c < s:save_cursor[2] - 1
                   execute 'normal! hvT'.char
-               endif
-            endif
-         endif
-      endif
-   endif
+               en
+            en
+         en
+      en
+   en
 
    if !s:success
       " @  X   @ cursor between a pair on the current line {{{1
-      function! s:Cursor_between(lchars)
+      fun! s:Cursor_between(lchars)
          let pattern = s:single_char ? escape(a:lchars, '^.~$') : '['.a:lchars.']'
          " Look for first match to the left...
          if search (pattern, 'b', line('.'))
@@ -47,13 +47,13 @@ function! pairs#process(chars, oprange)
                let s:success = 1
                if s:oprange == 'a'
                   execute 'normal!  vf'.lchar
-               else
+               el
                   execute 'normal! lvt'.lchar
-               endif
-            endif
+               en
+            en
             return lchar
-         endif
-      endfunction
+         en
+      endf
 
       let chars = s:chars
       let char  = s:Cursor_between(chars)
@@ -62,33 +62,33 @@ function! pairs#process(chars, oprange)
             let chars = substitute(chars, char, '', 'g')
             let char  = s:Cursor_between(chars)
          endwhile
-      endif
+      en
 
       if !s:success
          " X  @   @ cursor before a pair {{{1
-         function! s:Cursor_before(stop_line)
+         fun! s:Cursor_before(stop_line)
             while search (s:pattern, '', a:stop_line)
                let char = s:single_char ? s:chars : getline('.')[col('.') - 1]
                if strlen(substitute(getline('.'), '[^'.char.']', '', 'g')) > 1
                   let s:success = 1
                   if s:oprange == 'a'
                      execute 'normal! vf'.char
-                  else
+                  el
                      " @@ case
                      let [l, c] = searchpos (escape(char, '^.~$'), 'n', line('.'))
                      if c > col('.') + 1
                         execute 'normal! lvt'.char
-                     else
+                     el
                         " This is a pseudo solution as ideally I wanna cancel
                         " the omap which the return below fails to do (l.139: same)
                         call setpos('.', s:save_cursor)
                         " return "\<esc>"
-                     endif
-                  endif
+                     en
+                  en
                   break
-               endif
+               en
             endwhile
-         endfunction
+         endf
 
          call setpos('.', s:save_cursor)
          " ↓ look for a match after the cursor, also past the current line
@@ -97,9 +97,9 @@ function! pairs#process(chars, oprange)
             goto
             " ↻ match after the cursor past the EOF
             call s:Cursor_before(s:save_cursor[1])
-         endif
-      endif
-   endif " }}}1
+         en
+      en
+   en " }}}1
 
    if !s:success
       call setpos('.', s:save_cursor)
@@ -109,6 +109,6 @@ function! pairs#process(chars, oprange)
    " my_changedtick == ... can't happen because pairs#process doesn't do any changes !
    " elseif my_changedtick == b:changedtick && v:operator != 'y' || mode() != 'v'
       " echohl ErrorMsg | echo 'Nothing to do' | echohl None
-   endif
+   en
 
-endfunction
+endf
