@@ -15,8 +15,9 @@ New punctuation text objects
 
 Supported punctuation signs
 ---------------------------
-`` ` `` `"` `'`  
+`"` `'`  
 `!` `$` `%` `^` `&` `*` `_` `-` `+` `=` `:` `;` `@` `~` `#` `|` `\` `,` `.` `?` `/`
+和backtick
 
 ### Algorithm:  
 Do in order. If a step succeeds skip the rest.
@@ -29,7 +30,7 @@ Do in order. If a step succeeds skip the rest.
 Examples:
 ---------
 
-**_`[]` and `|` will represent the cursor_**  
+**`[]` and `|` will represent the cursor**  
 
 `ciq` or `""`
 ```
