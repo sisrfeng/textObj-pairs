@@ -46,7 +46,8 @@ let s:savecpo   = &cpoptions
 let s:savemagic = &magic
 set cpoptions&vim magic
 
-for p in [
+"\ m for match
+for m in [
       \'<bar>',
       \'<bslash>',
       \'#',
@@ -67,38 +68,40 @@ for p in [
       \':',
       \';',
       \'@',
-      \'~',
+      "\ \'\~',
       \]
 " 这里面 常用的并不多
 
-          " 字符串拼接太难看了.  最终结果, 类似:
-              " xno   <silent>   ip# :<c-u>call pairs#process('#', 'a')<cr>
-   exe         'ono   <silent>   i'..p.." :<c-u>call pairs#process('"..p.."'"  ..   ", 'i')<cr>"
-   exe         'ono   <silent>   a'..p.." :<c-u>call pairs#process('"..p.."'"  ..   ", 'a')<cr>"
-   exe         'xno   <silent>   i'..p.." :<c-u>call pairs#process('"..p.."'"  ..   ", 'i')<cr>"
-   exe         'xno   <silent>   a'..p.." :<c-u>call pairs#process('"..p.."'"  ..   ", 'a')<cr>"
-                ono i, i<
-                ono a, a<
-                " c, 代替ci< 少敲一个i
-                    nno c, ci<
-                    nno v, vi<
-                    nno y, yi<
-                    nno d, da<
+            " 字符串拼接太难看了.  最终结果, 类似:
+                "\ vim, dim等 不过用space代替m就行?
+    exe      'ono   <silent>   im'   " :<c-u>call pairs#process('" . m . "'" . ", 'i')<cr>"
+    exe      'ono   <silent>   am'   " :<c-u>call pairs#process('" . m . "'" . ", 'a')<cr>"
+    exe      'xno   <silent>   im'   " :<c-u>call pairs#process('" . m . "'" . ", 'i')<cr>"
+    exe      'xno   <silent>   am'   " :<c-u>call pairs#process('" . m . "'" . ", 'a')<cr>"
+             ono i, i<
+             ono a, a<
+             " c, 代替ci< 少敲一个i
+             nno c, ci<
+             nno v, vi<
+             nno y, yi<
+             nno d, da<
 endfor
 
 omap     <silent> iq     <plug>Pairs_In_Quote
 xmap     <silent> iq     <plug>Pairs_In_Quote
-ono      <silent>           <plug>Pairs_In_Quote :<c-u>call pairs#process("'`".'"', 'i')<cr>
-xno      <silent>           <plug>Pairs_In_Quote :<c-u>call pairs#process("'`".'"', 'i')<cr>
+ono      <silent>           <plug>Pairs_In_Quote    :<c-u>call pairs#process("'`#" . '"', 'i')<cr>
+xno      <silent>           <plug>Pairs_In_Quote    :<c-u>call pairs#process("'`#" . '"', 'i')<cr>
 
 omap     <silent> aq     <plug>Pairs_A_Quote
-ono      <silent>        <plug>Pairs_A_Quote :<c-u>call pairs#process("'`".'"', 'a')<cr>
+ono      <silent>        <plug>Pairs_A_Quote :<c-u>call pairs#process("'`#" . '"', 'a')<cr>
 xmap     <silent> aq     <plug>Pairs_A_Quote
-xno      <silent>        <plug>Pairs_A_Quote :<c-u>call pairs#process("'`".'"', 'a')<cr>
+xno      <silent>        <plug>Pairs_A_Quote :<c-u>call pairs#process("'`#" . '"', 'a')<cr>
 
-" Add (){}[]<> ?
-    " Would be awkward for cases like: ('...")
-    " adsfasdf adsfasdf 'adsfasdf' <asdfasdf>
+"\ 这里的头和尾都是相同的,
+"而'matchpairs'的头和尾是不同的, 比如:
+                        " (){}[]<> ?
+                        "\ :help matchpairs
+    "
 omap  <silent> i<space>     <plug>Pairs_In_All
 ono   <silent>              <plug>Pairs_In_All :<c-u>call pairs#process('-`!"$%^&*_+=:;@~#<bar><bslash>,.?/'."'", 'i')<cr>
 xmap  <silent> i<space>     <plug>Pairs_In_All
